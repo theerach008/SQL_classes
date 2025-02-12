@@ -157,3 +157,18 @@ select name,experience,"Selected" as result from emp having experience=3;
 SELECT name, experience, concat(name , " you selected")
 FROM emp 
 HAVING experience = 3;
+
+####sub qurys
+use theerach;
+select * from emp;
+select * from emp where name = ( select name from emp Where name like ("M%") limit 1);
+SELECT * 
+FROM emp 
+WHERE name = (SELECT name FROM emp WHERE name LIKE 'M%');
+select *,concat(name," , is max salary getting person" )as result from emp where salary = ( select max(salary) from emp);
+select * from emp where name in ( select name from emp where name like ("W%") );
+select * from emp where name in ( select name from emp where name like ("%a%") );
+
+select name,max(id) from emp 
+where salary = (select max(salary) from emp ) group by name;
+select experience,name from emp where not exists(select * from emp where experience = 55) ;
