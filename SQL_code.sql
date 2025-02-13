@@ -172,3 +172,12 @@ select * from emp where name in ( select name from emp where name like ("%a%") )
 select name,max(id) from emp 
 where salary = (select max(salary) from emp ) group by name;
 select experience,name from emp where not exists(select * from emp where experience = 55) ;
+
+##joins
+select * from STUDENTTABLE;
+select * from STUDENTCOURSENEW;
+
+#inner joins
+use theerach;
+select t1.name,t2.coursename from STUDENTTABLE t1 inner join STUDENTCOURSENEW t2 on t1.roll_no = t2.roll_no;
+select t2.coursename,count(t1.name) from STUDENTTABLE t1 inner join STUDENTCOURSENEW t2 on t1.roll_no = t2.roll_no group by t2.coursename;
