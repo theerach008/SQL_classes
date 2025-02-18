@@ -181,3 +181,118 @@ select * from STUDENTCOURSENEW;
 use theerach;
 select t1.name,t2.coursename from STUDENTTABLE t1 inner join STUDENTCOURSENEW t2 on t1.roll_no = t2.roll_no;
 select t2.coursename,count(t1.name) from STUDENTTABLE t1 inner join STUDENTCOURSENEW t2 on t1.roll_no = t2.roll_no group by t2.coursename;
+
+
+-----------------------------------------------------------------------------------------------------------------------
+create table cars(
+	make varchar(100),
+    model varchar(100),
+    year int,
+    value decimal(10,2)
+);
+insert  into cars (make,model,year,value) 
+values ("Porsche","911 GT3",2000,200.0),("Porsche 001","911 GT3",2000,400.0),("Porsche 002","911 GT3",2000,500.0);
+
+delimiter //
+create procedure procedure_test3()
+begin 
+	select * from cars;
+end //
+delimiter ;
+call procedure_test3;
+
+delimiter //
+create procedure car_id( in cars_make varchar(100))
+begin 
+	select * from cars where make= cars_make;
+end // 
+delimiter ;
+call car_id ('TK');
+
+delimiter //
+
+
+
+##procedure()
+delimiter //
+create procedure double_no (
+	in input_no int,
+    out result int 
+)
+begin 
+	set result = input_no * 2 ;
+end //
+delimiter ;
+
+call double_no(59,@output);
+select @output;
+
+delimiter //
+create procedure count_cars(
+	in input_no decimal (10,2),
+    out output_no decimal (10,2),
+    out max_cars decimal (10,2)
+)
+begin 
+	select count(*),max(value) from cars where value = input_no ;
+end // 
+delimiter ;
+
+call count_cars(100.00,@ouput);
+select output ;
+
+alter table cars add  (start_date date ) ;
+insert into cars (start_date) values('2025-01-01');
+select * from cars;
+
+delimiter //
+create procedure test_01 (
+	in input_no int ,
+    out result int
+    )
+begin
+	set result = 5 * input_no ;
+end //
+delimiter ;
+
+call test_01(5,@result);
+select @result;
+
+####procedure with count,max,min,avg
+
+delimiter //
+create procedure cmma_procedure1 (
+	out total_count decimal (10,2),
+    out min_value decimal(10,2),
+    out max_value decimal (10,2),
+    out avg_values decimal (10,2),
+    out min_date date
+)
+begin 
+	select count(*),max(value),min(value),avg(value),min(start_date) into total_count,min_value,max_value,avg_values,min_date from cars ;
+end //
+delimiter ;
+
+call cmma_procedure1(@count,@max,@min,@avg,@min);
+select @count as total_count ,@max as max_value, @min as min_value, @avg as avg_value, @min as min_date;
+select * from cars ;
+
+
+delimiter //
+create procedure testoo0(
+	input decimal (10,2),
+    out total_count decimal (10,2),
+    out max_values decimal (10,2),
+    out min_values decimal (10,2),
+    out avg_values  decimal (10,2),
+    out min_date date
+)
+begin 
+	select count(value),max(value),min(value),avg(value),min(start_date) 
+    into total_count ,max_values ,min_values ,avg_values ,min_date from cars;
+end //
+delimiter ;
+call testoo0(2015,@count,@max,@min,@avg,@min);
+select @count,@max,@min,@avg,@min;
+
+
