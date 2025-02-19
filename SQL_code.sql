@@ -309,3 +309,14 @@ delimiter ;
 
 select function_add(5,7);
 
+delimiter //
+create function function_sub(a int , b int)
+returns int
+deterministic
+begin 
+	declare sum int ;
+    set sum = a - b ;
+    return sum ;
+end //
+delimiter ; 
+select function_sub(5,7);
