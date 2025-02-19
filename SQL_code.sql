@@ -320,3 +320,54 @@ begin
 end //
 delimiter ; 
 select function_sub(5,7);
+
+##ex
+
+Delimiter //
+create procedure year_filter (in input_year year, in model_cars varchar(50),out max_values decimal(10,2) )
+begin 
+	select max(value) from cars where year = input_year or model = model_cars ;
+end //
+delimiter ;
+call year_filter(2017,'911 GT3',@max);
+
+delimiter //
+create procedure max_id_student (out max_id int)
+begin 
+	select max(Roll_no) from studenttable;
+end //
+delimiter ;
+call max_id_student(@max);
+select * from studenttable;
+
+delimiter //
+create function function_mult (a int , b int )
+returns int
+deterministic 
+begin 
+	declare sum int;
+    set sum = a * b ;
+    return sum ;
+end //
+delimiter ;
+select function_mult(2,4);
+
+delimiter //
+create procedure name_count_procedure(out count_of decimal (10,2),out max_values decimal (10,2),out name varchar(20) )
+begin 
+	select count(*),max(value),make from cars group by make into name,count_of,max_values ;
+end //
+delimiter ;
+call name_count_procedure(@count,@max,@name);
+select @count as count,@max as max;
+select * from cars ;
+
+delimiter //
+create procedure update_test (in input_year int , in input_name varchar (50))
+begin 
+	UPDATE cars SET make = input_name WHERE year = input_year;
+    select * from cars ;
+end //
+delimiter ;
+call update_test(2022,'Mercedes-Benz GLC');
+SET SQL_SAFE_UPDATES = 0;
