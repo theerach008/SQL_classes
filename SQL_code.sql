@@ -295,4 +295,17 @@ delimiter ;
 call testoo0(2015,@count,@max,@min,@avg,@min);
 select @count,@max,@min,@avg,@min;
 
+###functions
+delimiter //
+create function function_add(a int , b int)
+returns int
+deterministic 
+begin 
+	declare sum int;
+    set sum = a + b ;
+    return sum ;
+end //
+delimiter ;
+
+select function_add(5,7);
 
