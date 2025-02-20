@@ -371,3 +371,39 @@ end //
 delimiter ;
 call update_test(2022,'Mercedes-Benz GLC');
 SET SQL_SAFE_UPDATES = 0;
+
+#####20-2-2025
+delimiter //
+create function date_of_b(ename varchar(20) )
+returns varchar (20)
+deterministic  
+begin 
+	declare date_of varchar(20);
+    select model into date_of from cars where make = ename limit 1;
+    return date_of ;
+end //
+delimiter ;
+select date_of_b('Ferrari');
+
+select * from cars;
+
+delimiter //
+create procedure view_model( in ename varchar(20) ,out car_model varchar (20) )
+begin 
+	select model into car_model from cars where make = ename limit 1;
+end //
+delimiter ;
+call view_model('Ferrari',@car_model);
+select @car_model;
+
+delimiter //
+create function model_fun (input_name varchar(20))
+returns varchar(20)
+deterministic
+begin 
+	declare car_model varchar(20) ;
+	select model into car_model from cars where make = input_name limit 1 ;
+    return car_model ;
+end //
+delimiter ;
+select model_fun('Ferrari');
