@@ -407,3 +407,37 @@ begin
 end //
 delimiter ;
 select model_fun('Ferrari');
+
+##trigger
+use theerach;
+create table emp (emp_id int primary key ,name varchar(20) not null ,DOJ DATE NOT NULL DEFAULT '1000-01-01') ;
+insert into emp (emp_id,name,doj) values (1,'tk','2025-02-10');
+insert into emp values (2,'m','2025-02-10');
+select * from emp_audit;
+
+create table emp_audit (emp_id int ,oprations varchar(20),trigger_date date) ;
+
+DELIMITER //
+CREATE TRIGGER trg_test
+AFTER INSERT ON emp 
+FOR EACH ROW
+BEGIN
+    INSERT INTO emp_audit (emp_id, oprations, trigger_date)
+    VALUES (NEW.emp_id, 'ins', NOW());
+END;
+//
+DELIMITER ;
+
+delimiter //
+create trigger Test_trg 
+after insert on emp for each row
+begin
+	insert into emp_audit(emp_id,oprations,trigger_date) 
+    values(emp_id,'INS',now());
+end //
+delimiter ;
+
+SHOW CREATE TRIGGER trg_test;
+DROP TRIGGER IF EXISTS Test_trg;
+
+delete from emp_audit where emp_id is null;
