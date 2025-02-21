@@ -1,0 +1,5 @@
+SHOW DATABASES;
+DROP DATABASE theerach;
+
+CREATE DATABASE Theerach;
+USE Theerach;
