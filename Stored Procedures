@@ -1,0 +1,49 @@
+DELIMITER //
+CREATE PROCEDURE procedure_test3()
+BEGIN 
+    SELECT * FROM cars;
+END //
+DELIMITER ;
+CALL procedure_test3;
+
+-------------------------------------------------------------Procedure with Input Parameter
+DELIMITER //
+CREATE PROCEDURE car_id(IN cars_make VARCHAR(100))
+BEGIN 
+    SELECT * FROM cars WHERE make = cars_make;
+END //
+DELIMITER ;
+CALL car_id('TK');
+
+-------------------------------------------------------------Procedure with Input and Output Parameters
+DELIMITER //
+CREATE PROCEDURE double_no(
+    IN input_no INT,
+    OUT result INT 
+)
+BEGIN 
+    SET result = input_no * 2;
+END //
+DELIMITER ;
+CALL double_no(59, @output);
+SELECT @output;
+
+-------------------------------------------------------------Procedure for Aggregate Calculations
+DELIMITER //
+CREATE PROCEDURE cmma_procedure1(
+    OUT total_count DECIMAL(10,2),
+    OUT min_value DECIMAL(10,2),
+    OUT max_value DECIMAL(10,2),
+    OUT avg_values DECIMAL(10,2),
+    OUT min_date DATE
+)
+BEGIN 
+    SELECT COUNT(*), MAX(value), MIN(value), AVG(value), MIN(start_date) 
+    INTO total_count, min_value, max_value, avg_values, min_date 
+    FROM cars;
+END //
+DELIMITER ;
+CALL cmma_procedure1(@count, @max, @min, @avg, @min);
+SELECT @count, @max, @min, @avg, @min;
+
+-------------------------------------------------------------
